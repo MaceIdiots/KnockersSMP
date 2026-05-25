@@ -1,0 +1,6 @@
+{
+  "name": "Knockers SMP",
+  "description": "The official landing page for Knockers SMP - a monthly resetting Minecraft experience featuring epic End Fights and community-driven seasons.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
