@@ -30,14 +30,7 @@ export default function App() {
       </div>
 
       {/* Navigation - Minimal */}
-      <nav className="fixed top-0 left-0 right-0 flex justify-between items-center px-6 md:px-12 py-8 z-40">
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="text-xl font-black tracking-tighter"
-        >
-          KNOCKERS <span className="text-red-600">SMP</span>
-        </motion.div>
+      <nav className="fixed top-0 left-0 right-0 flex justify-end items-center px-6 md:px-12 py-8 z-40">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -62,20 +55,9 @@ export default function App() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10 text-center max-w-4xl"
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8"
-          >
-            <span className="px-6 py-2 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-black tracking-[0.3em] uppercase">
-              Limited slots available
-            </span>
-          </motion.div>
-          
           <h1 className="text-7xl md:text-[120px] font-black leading-[0.85] tracking-tighter mb-8 italic uppercase">
-            SURVIVAL <br />
-            <span className="text-red-600 drop-shadow-[0_0_30px_rgba(220,38,38,0.4)]">EVOLVED.</span>
+            KNOCKERS <br />
+            <span className="text-red-600 drop-shadow-[0_0_30px_rgba(220,38,38,0.4)]">SMP.</span>
           </h1>
           <p className="text-neutral-500 text-xl md:text-2xl max-w-2xl mx-auto mb-12 font-medium">
             Everything resets every month. A fresh start for everyone.
@@ -269,7 +251,6 @@ export default function App() {
       <footer className="py-12 border-t border-white/5 opacity-40 px-6 text-center">
         <div className="max-w-7xl mx-auto flex flex-col items-center gap-4">
            <span className="font-black tracking-tighter text-2xl">KNOCKERS SMP</span>
-           <span className="text-[10px] font-mono tracking-widest uppercase">The monthly reset experience.</span>
         </div>
       </footer>
     </div>
