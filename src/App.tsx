@@ -4,7 +4,7 @@
  */
 
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "motion/react";
-import { ChevronDown, Sword, Users, Timer, MessageSquare, Trophy, Hash, ArrowUpRight, MapPin } from "lucide-react";
+import { ChevronDown, Sword, Users, Timer, MessageSquare, Trophy, Hash, ArrowUpRight, MapPin, Copy, Check } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 
 const smoothEase = [0.16, 1, 0.3, 1];
@@ -22,12 +22,36 @@ export default function App() {
   const scaleTransform = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
 
   const [mounted, setMounted] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   useEffect(() => setMounted(true), []);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setToastMessage(`Copied to clipboard!`);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
 
   if (!mounted) return null;
 
   return (
     <div className="bg-[#050505] text-neutral-50 font-sans selection:bg-red-600/30 selection:text-red-400 overflow-x-hidden min-h-screen">
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-neutral-800/90 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl flex items-center gap-3"
+          >
+            <div className="bg-green-500/20 p-1 rounded-full">
+               <Check className="w-3 h-3 text-green-500" />
+            </div>
+            <span className="text-white text-sm font-medium">{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Progress Indicator */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-[3px] bg-red-600 origin-left z-50 rounded-r-full shadow-[0_0_10px_#dc2626]"
@@ -79,10 +103,13 @@ export default function App() {
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-[pulse_2s_ease-in-out_infinite]" />
               The Next Evolution
             </span>
-            <span className="px-4 py-1.5 rounded-full bg-neutral-900/50 border border-white/10 text-neutral-400 text-xs font-semibold tracking-widest uppercase flex items-center gap-2">
+            <motion.span 
+              whileHover={{ scale: 1.05 }}
+              className="px-4 py-1.5 rounded-full bg-neutral-900/50 border border-white/10 text-neutral-400 text-xs font-semibold tracking-widest uppercase flex items-center gap-2 hover:bg-neutral-800 hover:text-white hover:border-white/20 transition-all cursor-default shadow-sm hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+            >
               <MapPin className="w-3 h-3" />
-              Singapore Hosting
-            </span>
+              Singapore
+            </motion.span>
           </div>
           
           <h1 className="text-6xl sm:text-7xl md:text-[110px] font-medium leading-[0.9] tracking-tighter mb-8 text-neutral-100">
@@ -115,6 +142,16 @@ export default function App() {
               <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
             </button>
           </div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: smoothEase, delay: 0.2 }}
+            className="mt-12 flex flex-col md:flex-row gap-4 justify-center items-stretch w-full max-w-3xl z-20"
+          >
+            <CopyIPCard type="Java Edition" ip="vision-newport.gl.joinmc.link" onCopy={handleCopy} />
+            <CopyIPCard type="Bedrock Edition" ip="collection-samples.gl.at.ply.gg" port="56408" onCopy={handleCopy} />
+          </motion.div>
         </motion.div>
       </motion.section>
 
@@ -330,17 +367,23 @@ export default function App() {
               <h2 className="text-5xl md:text-7xl font-medium tracking-tighter mb-10 text-white">
                 Ready to fight?
               </h2>
-              <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                href="https://discord.gg/drt4CmFJF"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black rounded-full font-semibold text-lg transition-all"
-              >
-                Join Discord
-                <MessageSquare className="w-5 h-5" />
-              </motion.a>
+              <div className="flex flex-col items-center gap-8">
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  href="https://discord.gg/drt4CmFJF"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black rounded-full font-semibold text-lg transition-all"
+                >
+                  Join Discord
+                  <MessageSquare className="w-5 h-5" />
+                </motion.a>
+                <div className="flex flex-col md:flex-row gap-4 justify-center w-full max-w-2xl items-stretch">
+                  <CopyIPCard type="Java Edition" ip="vision-newport.gl.joinmc.link" onCopy={handleCopy} />
+                  <CopyIPCard type="Bedrock Edition" ip="collection-samples.gl.at.ply.gg" port="56408" onCopy={handleCopy} />
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -352,6 +395,27 @@ export default function App() {
           </div>
         </footer>
       </div>
+    </div>
+  );
+}
+
+function CopyIPCard({ type, ip, port, onCopy }: { type: string, ip: string, port?: string, onCopy: (text: string) => void }) {
+  const fullText = port ? `${ip}:${port}` : ip;
+  
+  return (
+    <div 
+      onClick={() => onCopy(fullText)}
+      className="flex items-center justify-between gap-6 py-3 px-5 rounded-2xl bg-neutral-900/40 border border-white/5 hover:border-white/20 hover:bg-neutral-800/60 transition-all cursor-pointer group backdrop-blur-sm w-full sm:w-auto h-full"
+    >
+       <div className="text-left w-full max-w-[200px]">
+         <span className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1">{type}</span>
+         <span className="block text-sm font-mono text-neutral-300 group-hover:text-white transition-colors truncate">
+           {ip}{port && <span className="text-neutral-500">:{port}</span>}
+         </span>
+       </div>
+       <div className="p-2 rounded-xl bg-white/5 group-hover:bg-white/10 transition-colors shrink-0">
+         <Copy className="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors" />
+       </div>
     </div>
   );
 }
