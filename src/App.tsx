@@ -4,7 +4,7 @@
  */
 
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "motion/react";
-import { ChevronDown, Sword, Users, Timer, MessageSquare, Trophy, Hash, ArrowUpRight } from "lucide-react";
+import { ChevronDown, Sword, Users, Timer, MessageSquare, Trophy, Hash, ArrowUpRight, MapPin } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 
 const smoothEase = [0.16, 1, 0.3, 1];
@@ -74,9 +74,14 @@ export default function App() {
           transition={{ duration: 1.2, ease: smoothEase, delay: 0.1 }}
           className="relative z-10 text-center max-w-5xl"
         >
-          <div className="mb-6 flex justify-center">
-            <span className="px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-semibold tracking-widest uppercase">
+          <div className="mb-6 flex flex-wrap justify-center gap-3">
+            <span className="px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-semibold tracking-widest uppercase flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-[pulse_2s_ease-in-out_infinite]" />
               The Next Evolution
+            </span>
+            <span className="px-4 py-1.5 rounded-full bg-neutral-900/50 border border-white/10 text-neutral-400 text-xs font-semibold tracking-widest uppercase flex items-center gap-2">
+              <MapPin className="w-3 h-3" />
+              Singapore Hosting
             </span>
           </div>
           
@@ -146,14 +151,11 @@ export default function App() {
             </div>
             <div className="bg-neutral-900/50 border border-white/5 rounded-3xl p-8 md:p-16 flex items-center justify-center relative overflow-hidden aspect-square lg:aspect-auto h-full min-h-[400px]">
                <div className="absolute inset-0 bg-gradient-to-tr from-red-600/5 to-transparent pointer-events-none" />
-               <Timer className="w-32 h-32 md:w-48 md:h-48 text-neutral-800 absolute animate-[pulse_6s_infinite]" />
                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 1.5, ease: smoothEase, delay: 0.2 }}
-                  className="z-10 bg-[#050505] p-6 rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                >
-                 <span className="text-red-500 font-medium">System / Reset In Progress</span>
+                 <Timer className="w-32 h-32 md:w-48 md:h-48 text-red-500 drop-shadow-[0_0_25px_rgba(239,68,68,0.4)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                </motion.div>
             </div>
           </motion.div>
@@ -246,6 +248,54 @@ export default function App() {
           </motion.div>
         </section>
 
+        {/* Rules Section */}
+        <section className="py-32 px-6 md:px-16 max-w-7xl mx-auto border-t border-white/5">
+          <div className="grid lg:grid-cols-3 gap-16 items-start">
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: smoothEase }}
+              className="lg:col-span-1 space-y-6 lg:sticky top-32"
+            >
+              <div className="flex flex-col gap-2">
+                <span className="text-red-500 font-bold tracking-widest uppercase text-xs">Zero Tolerance</span>
+                <h2 className="text-4xl md:text-5xl font-medium tracking-tighter text-white">
+                  Strictly Enforced Rules.
+                </h2>
+              </div>
+              <p className="text-neutral-400 text-lg leading-relaxed font-light tracking-tight">
+                We maintain a highly competitive but utterly fair environment. Cheating, abusing mechanics, or toxicity results in immediate removal. No second chances.
+              </p>
+            </motion.div>
+            
+            <div className="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+                {[
+                  { title: "Fair Play", desc: "No hacked clients, x-ray, exploits, duping, or alt accounts. Pure vanilla combat and strategy." },
+                  { title: "Combat Integrity", desc: "No combat logging, naked killing, or spawn trapping. Fight with honor." },
+                  { title: "Respect", desc: "No toxicity, hate speech, or harassment. Respect the community and the staff." },
+                  { title: "Staff Authority", desc: "Staff decisions are final. No excessive arguing or attempting to bypass punishments." },
+                ].map((rule, i) => (
+                  <motion.div 
+                    key={i} 
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: smoothEase, delay: i * 0.1 }}
+                    whileHover={{ y: -5, backgroundColor: "rgba(23, 23, 23, 0.5)", transition: { duration: 0.2 } }}
+                    className="flex flex-col gap-4 bg-neutral-900/30 p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors group"
+                  >
+                     <span className="text-red-500 font-mono text-xs font-bold uppercase tracking-widest">0{i + 1}</span>
+                     <div>
+                       <h3 className="text-xl font-medium text-white mb-2">{rule.title}</h3>
+                       <p className="text-neutral-400 font-light text-sm md:text-base leading-relaxed tracking-tight">{rule.desc}</p>
+                     </div>
+                  </motion.div>
+                ))}
+            </div>
+          </div>
+        </section>
+
         {/* Vote Section */}
         <section className="py-24 px-6 md:px-16 text-center max-w-4xl mx-auto">
            <motion.div
@@ -297,9 +347,8 @@ export default function App() {
 
         {/* Footer */}
         <footer className="py-12 border-t border-white/5 px-8">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-7xl mx-auto flex justify-center items-center">
              <span className="text-white font-semibold tracking-tight text-xl">KNOCKERS.</span>
-             <span className="text-neutral-600 text-sm font-medium">© {new Date().getFullYear()} Knockers SMP. All rights reserved.</span>
           </div>
         </footer>
       </div>
