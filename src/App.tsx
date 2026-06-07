@@ -379,10 +379,6 @@ export default function App() {
                   Join Discord
                   <MessageSquare className="w-5 h-5" />
                 </motion.a>
-                <div className="flex flex-col md:flex-row gap-4 justify-center w-full max-w-2xl items-stretch">
-                  <CopyIPCard type="Java Edition" ip="vision-newport.gl.joinmc.link" onCopy={handleCopy} />
-                  <CopyIPCard type="Bedrock Edition" ip="collection-samples.gl.at.ply.gg" port="56408" onCopy={handleCopy} />
-                </div>
               </div>
             </motion.div>
           </div>
